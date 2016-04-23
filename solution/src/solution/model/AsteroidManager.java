@@ -32,7 +32,6 @@ public class AsteroidManager {
 		    if (parts[0].equals("#")) { 
 		    	continue;
 		    }
-		    System.out.println(parts[0]);
 		    Asteroid t = new Asteroid();
 		    t.setX0(Integer.parseInt(parts[0]));
 		    t.setY0(Integer.parseInt(parts[1]));
@@ -40,7 +39,6 @@ public class AsteroidManager {
 		    t.setYv(Integer.parseInt(parts[3]));
 		    t.setR(Double.parseDouble(parts[4]));
 		    asteroids.add(t);
-		    System.out.println(t);
 		}
 	}
 }

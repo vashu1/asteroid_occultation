@@ -26,9 +26,6 @@ public class SolutionScoreCalculator {
 		for (Telescope telescope : this.telescopes) {
 			double telescopeScore = getTelescopeScore(solutionEventMap.get(telescope.getId()), realEventMap.get(telescope.getId()));
 			totalScore -= telescopeScore;
-//			if (telescopeScore > 0) {
-//				System.out.println("NON ZERO TELESCOPE " + telescope.getId() + " " + telescopeScore);
-//			}
 		}
 
 		return totalScore; 
