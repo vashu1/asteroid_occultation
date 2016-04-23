@@ -20,7 +20,6 @@ public class AsteroidManager {
 		return asteroids;
 	}
 	
-	
 	public void Load() throws IOException {
 		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + INPUT_FOLDER + java.io.File.separator + INPUT_FILE_ASTEROIDS);
 		BufferedReader reader = Files.newBufferedReader(eventsFile, Charset.defaultCharset());

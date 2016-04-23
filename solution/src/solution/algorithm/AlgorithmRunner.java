@@ -6,12 +6,10 @@ public class AlgorithmRunner {
 	private static double INITIAL_RADIUS = 100;
 	private static double STEP_X = INITIAL_RADIUS;
 	private int e = 0;
-	private List<Telescope> telescopes;
-	private List<Event> events;
+	private SolutionScoreCalculator scoreCalculator;
 	
 	public AlgorithmRunner(List<Event> events, List<Telescope> telescopes) {
-		this.events = events;
-		this.telescopes = telescopes;
+		this.scoreCalculator = new SolutionScoreCalculator(events, telescopes);
 		/* Solution best = Something(getInitialSolution(events.get(0), events.get(events.size() - 1)));
 		
 		double e = STEP_X;
@@ -22,7 +20,7 @@ public class AlgorithmRunner {
 			}
 			best = max solutions;
 					
-			e *= 0.8;
+			e *= 0.9;
 		} */
 	}
 	
@@ -69,54 +67,9 @@ public class AlgorithmRunner {
 				return result;
 		};
 		
-		result.setScore(solutionScore(result));
+		result.setScore(this.scoreCalculator.getSolutionScore(result));
 		
 		return result;
 	}
 	
-	public double solutionScore(Solution solution) {
-		List<Event> solutionEvents = calculateSolutionEvents(solution);
-		return eventFit(solutionEvents, this.events);
-	}
-	
-	private double eventFit(List<Event> solutionEvents, List<Event> realEvents) {
-		return 0; // TODO
-	}
-	
-	private List<Event> calculateSolutionEvents(Solution solution) {
-		List<Event> list = new ArrayList<Event>();
-		for (Telescope telescope : this.telescopes) {
-			Event ev = calculateTelescopeEvent(telescope, solution);
-			if (ev != null) {
-				list.add(ev);
-			}
-		}
-		return list;
-	}
-	
-	private Event calculateTelescopeEvent(Telescope telescope, Solution solution) {
-		double xa = solution.getX0();
-		double ya = solution.getY0();
-		double vxa = solution.getXv();
-		double vya = solution.getYv();
-		double xt = telescope.getX();
-		double yt = telescope.getY();
-		
-		double xd = xa - xt;
-		double yd = ya - yt;
-		
-		double a = vxa * vxa + vya * vya;
-		double b = 2 * (vxa * xd + vya * yd);
-		double c = xd * xd + yd * yd - solution.getRadius() * solution.getRadius();
-		
-		double D = b * b - 4 * a * c;
-		
-		if (D <= 0)
-			return null;
-		
-		double t1 = (-b + Math.sqrt(D)) / (2 * a);
-		double t2 = (-b - Math.sqrt(D)) / (2 * a);
-		
-		return new Event(telescope, t2, t1);
-	}
 }
