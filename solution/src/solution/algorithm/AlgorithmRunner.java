@@ -8,8 +8,14 @@ public class AlgorithmRunner {
 	private static double STEP_X = INITIAL_RADIUS;
 	private SolutionScoreCalculator scoreCalculator;
 	
+	private List<Event> events;
+	
 	public AlgorithmRunner(List<Telescope> telescopes, List<Event> events) {
 		this.scoreCalculator = new SolutionScoreCalculator(events, telescopes);
+		this.events = events;
+	}
+
+	public void run() {
 		Solution best = getInitialSolution(events.get(0), events.get(events.size() - 1));
 		
 		double e = STEP_X;
@@ -19,6 +25,7 @@ public class AlgorithmRunner {
 				solutions.add(getChangedSolution(best, e, param));
 			}
 			best = getMaxScoreSolution(solutions);
+			System.out.println("BEST CANDIDATE SCORE: " + best.getScore());
 					
 			e *= 0.9;
 		}
@@ -40,12 +47,14 @@ public class AlgorithmRunner {
 	
 	public Solution getInitialSolution(Event e1, Event e2) {
 		System.out.println("INITIAL EVENTS " + e1 + " (2): " + e2);
-		double xv = (e2.getTelescope().getX() - e1.getTelescope().getX()) / ((e2.getStartTime() - e1.getEndTime()) / 1000);
-		double yv = (e2.getTelescope().getY() - e1.getTelescope().getY()) / ((e2.getStartTime() - e1.getEndTime()) / 1000);
-		double t0 = ((e2.getStartTime() - e1.getEndTime()) / 1000);
-		double x0 = e1.getTelescope().getX() + t0 / 1000 * xv;
-		double y0 = e1.getTelescope().getY() + t0 / 1000 * yv;
-		return new Solution(INITIAL_RADIUS, t0, x0, y0, xv, yv);
+		double xv = (e2.getTelescope().getX() - e1.getTelescope().getX()) / (e2.getStartTime() - e1.getEndTime());
+		double yv = (e2.getTelescope().getY() - e1.getTelescope().getY()) / (e2.getStartTime() - e1.getEndTime());
+		double t0 = ((e2.getStartTime() - e1.getEndTime()));
+		double x0 = e1.getTelescope().getX() + t0 * xv;
+		double y0 = e1.getTelescope().getY() + t0 * yv;
+		Solution result =  new Solution(INITIAL_RADIUS, t0, x0, y0, xv, yv);
+		result.setScore(this.scoreCalculator.getSolutionScore(result));
+		return result;
 	}
 
 	
@@ -64,7 +73,7 @@ public class AlgorithmRunner {
 		
 		switch(paramNumberToChange) {
 			case 1:
-				result.setT0(result.getT0() + e / INITIAL_RADIUS);
+				result.setT0(result.getT0() + e / 2 / INITIAL_RADIUS);
 				break;
 			case 2:
 				result.setX0(result.getX0() + e);

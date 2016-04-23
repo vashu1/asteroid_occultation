@@ -36,7 +36,7 @@ public class Test {
 		System.out.println(events);
 		System.out.println(asteroids);
 		
-		new AlgorithmRunner(telescopes, events);
+		new AlgorithmRunner(telescopes, events).run();
 	}
 	
 //	public static LoadEvents() {

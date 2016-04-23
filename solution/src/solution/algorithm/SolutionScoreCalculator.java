@@ -16,7 +16,6 @@ public class SolutionScoreCalculator {
 
 	public double getSolutionScore(Solution solution) {
 		List<Event> solutionEvents = calculateSolutionEvents(solution);
-		// add f(R) to score
 		return eventFit(solutionEvents, this.events, solution);
 	}
 	
@@ -57,20 +56,14 @@ public class SolutionScoreCalculator {
 		while (solutionEvent != null && realEvent != null) {
 			double intersectionDuration = Math.min(solutionEvent.getEndTime(), realEvent.getEndTime()) -
 					Math.max(solutionEvent.getStartTime(), realEvent.getStartTime());
-			if (intersectionDuration > 0) {
+			if (intersectionDuration > 0) 
 				totalIntersection += intersectionDuration;
-				if (solutionEvent.getEndTime() < realEvent.getEndTime()) {
-					solutionEventIndex++;
-				} else {
-					realEventIndex++;
-				}
+			if (solutionEvent.getEndTime() < realEvent.getEndTime()) {
+				solutionEventIndex++;
 			} else {
-				if (solutionEvent.getStartTime() < realEvent.getStartTime()) {
-					solutionEventIndex++;
-				} else {
-					realEventIndex++;
-				}
-			}	
+				realEventIndex++;
+			}
+
 			solutionEvent = getSafeEvent(solutionEvents, solutionEventIndex);
 			realEvent = getSafeEvent(realEvents, realEventIndex);
 		}
@@ -124,8 +117,8 @@ public class SolutionScoreCalculator {
 		if (D <= 0)
 			return null;
 		
-		double t1 = (-b + Math.sqrt(D)) / (2 * a) * 1000;
-		double t2 = (-b - Math.sqrt(D)) / (2 * a) * 1000;
+		double t1 = (-b + Math.sqrt(D)) / (2 * a);
+		double t2 = (-b - Math.sqrt(D)) / (2 * a);
 		
 		return new Event(telescope, t2, t1);
 	}
