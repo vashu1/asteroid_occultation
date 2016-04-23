@@ -1,7 +1,5 @@
 package solution;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -14,34 +12,20 @@ import solution.model.EventManager;
 import solution.model.Telescope;
 import solution.model.TelescopeManager;
 
-public class Integration {
+public class InitialSolutionsManager {
 	private final static String INPUT_FOLDER = ".";
-	//private final static String SIMULATOR_COMMAND = 
 	
 	public static void main(String[] args) throws Exception {
-		
-		
+		System.out.println("STARTED " + System.currentTimeMillis());
+
 		StringBuilder results = new StringBuilder();
-		for (int i=0;i<1000;i++) {
-			launchSimulation();
+		for (int i=0; i<1000; i++) {
+			SimulationRunner.launchSimulation();
 			String result = launchSolution();
 			results.append(result).append("\n");
 		}
-		Files.write(Paths.get("./duke.txt"), results.toString().getBytes());
-	}
-	
-	private static void launchSimulation() throws Exception {
-		String absPath = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + INPUT_FOLDER +
-									java.io.File.separator + ".." + java.io.File.separator + "simulation" + java.io.File.separator + "generate_data.py" ).toString();
-		String command = "python " + absPath;
-		String line;
-	    Process child = Runtime.getRuntime().exec(command);
-	    BufferedReader input = new BufferedReader(new InputStreamReader(child.getInputStream()));
-	    while ((line = input.readLine()) != null) {
-	      System.out.println(line);
-	    }
-	    input.close();
-
+		Files.write(Paths.get("./initialSolutions.txt"), results.toString().getBytes());
+		System.out.println("ENDED " + System.currentTimeMillis());
 	}
 	
 	private static String launchSolution() throws Exception {
@@ -59,7 +43,7 @@ public class Integration {
 		List<Event> events = em.getEvents();
 		
 		String solution = new AlgorithmRunner(telescopes, events, asteroids).getInitialSolution().getScore() + "";
-		System.out.println(solution);
+//		System.out.println(solution);
 		return solution;
 	}
 }

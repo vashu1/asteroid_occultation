@@ -26,7 +26,7 @@ public class AlgorithmRunner {
 	public void run() {
 		Solution best = getInitialSolution();
 		
-		double e = STEP_X * 2;
+		double e = STEP_X;
 		while (e > 0.05) {
 			List<Solution> solutions = new ArrayList<Solution>();
 			for (int param = -6; param <= 6; param++) {
@@ -34,9 +34,9 @@ public class AlgorithmRunner {
 			}
 			best = getMaxScoreSolution(solutions);
 					
-			e *= 0.9;
+			e *= 0.99;
 		}
-		System.out.println("SOLUTION: " + best);
+//		System.out.println("SOLUTION: " + best);
 	}
 	
 	public Solution getInitialSolution() {
