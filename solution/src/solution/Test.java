@@ -8,9 +8,6 @@ import solution.model.Event;
 import solution.model.TelescopeManager;
 import solution.model.EventManager;
 
-import java.util.*;
-
-
 public class Test {
 	public static void main(String[] args) throws Exception {
 		TelescopeManager tm = new TelescopeManager();
