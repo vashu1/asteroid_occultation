@@ -18,12 +18,13 @@ from random import randint
 
 ASTEROID_R = 50
 ASTEROID_MAX_SPEED = 10 * 1000
+ASTEROID_MAX_SPEED = 10 * 1000
 ASTEROID_MIN_SPEED = ASTEROID_MAX_SPEED / 10
 ASTEROID_VX_VY_RATIO = 3
 
 T_WIDTH  = 10
 T_HEIGHT = 10
-T_STEP_X = ASTEROID_R
+T_STEP_X = ASTEROID_R * 10
 T_STEP_Y = ASTEROID_R
 
 OCCULTATION_FLAG = 'occultation'
@@ -36,8 +37,8 @@ asteroid = () # (x, y, vx, vy)
 def format(str):
     return str.replace('(', '').replace(')', '').replace(',', '').replace('\'', '') + os.linesep
 
-def time_to_msec_str(time):
-    return "%.0f" % (time * 1000)
+def time_str(time):
+    return "%.6f" % time
 
 def init_telescopes():
     telescopes = {}
@@ -78,7 +79,7 @@ def calc_event(telescope_num):
     if D > 0:
         t1 = (-b + math.sqrt(D)) / (2 * a)
         t2 = (-b - math.sqrt(D)) / (2 * a)
-        return (telescope_num, time_to_msec_str(t2), time_to_msec_str(t1))
+        return (telescope_num, time_str(t2), time_str(t1))
         #event_begin_point = (xa + vxa * t1, ya + vya * t1)
         #event_end_point = (xa + vxa * t2, ya + vya * t2)
 
