@@ -16,7 +16,7 @@ import os
 import math
 from random import randint
 
-ASTEROID_R = 50
+ASTEROID_R = 100
 ASTEROID_MAX_SPEED = 10 * 1000
 ASTEROID_MAX_SPEED = 10 * 1000
 ASTEROID_MIN_SPEED = ASTEROID_MAX_SPEED / 10
@@ -25,7 +25,7 @@ ASTEROID_VX_VY_RATIO = 3
 T_WIDTH  = 10
 T_HEIGHT = 10
 T_STEP_X = ASTEROID_R * 10
-T_STEP_Y = ASTEROID_R
+T_STEP_Y = ASTEROID_R / 2
 
 OCCULTATION_FLAG = 'occultation'
 NOISE_FLAG = 'noise'
@@ -103,7 +103,7 @@ events = calc_events()
 
 # output data
 with open('asteroid.txt','w') as f:
-    f.write(format(str(asteroid)))
+    f.write(format(str(asteroid) + ' ' + str(ASTEROID_R)))
     f.close()
 
 with open('events.txt','w') as f:
