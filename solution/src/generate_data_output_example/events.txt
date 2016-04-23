@@ -1,5 +1,5 @@
 # Detected events
 # Number_o_telescope_that_detected_blink    start_time_of_blink    end_time_of blink   noise|occultation_flag
-1 1.5 2.5 occultation
-2 5.5 6.5 occultation
+1 1 2 occultation
+2 5 6 occultation
 2 1 2 noise

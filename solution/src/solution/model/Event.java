@@ -23,6 +23,9 @@ public class Event {
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
+	public String toString() {
+		return "Event:" + telescope + " StartTime " + startTime + ", endTime " + endTime;
+	}
 	
 	
 }
