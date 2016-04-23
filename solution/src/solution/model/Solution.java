@@ -18,6 +18,15 @@ public class Solution {
 		this.yv = solution.yv;
 	}
 	
+	public Solution(Asteroid asteroid) {
+		this.radius = asteroid.getR();
+		this.t0 = 0;
+		this.x0 = asteroid.getX0();
+		this.y0 = asteroid.getY0();
+		this.xv = asteroid.getXv();
+		this.yv = asteroid.getYv();
+	}
+	
 	public Solution(double radius, double t0, double x0, double y0, double xv, double yv) {
 		super();
 		this.radius = radius;
@@ -78,7 +87,7 @@ public class Solution {
 	@Override
 	public String toString() {
 		return "Solution [radius=" + radius + ", t0=" + t0 + ", x0=" + x0 + ", y0=" + y0 + ", xv=" + xv + ", yv=" + yv
-				+ ", score=" + score + "]";
+				+ ", score=" + score+ ", x00=" + (x0-t0*xv) + ", y00=" + (y0-t0*yv) + "]";
 	}
 	
 	

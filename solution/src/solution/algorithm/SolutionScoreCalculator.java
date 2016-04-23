@@ -24,7 +24,11 @@ public class SolutionScoreCalculator {
 		Map<Integer, List<Event>> realEventMap = getEventMap(realEvents);
 		double totalScore = solution.getRadius() / AlgorithmRunner.INITIAL_RADIUS;
 		for (Telescope telescope : this.telescopes) {
-			totalScore -= getTelescopeScore(solutionEventMap.get(telescope.getId()), realEventMap.get(telescope.getId()));
+			double telescopeScore = getTelescopeScore(solutionEventMap.get(telescope.getId()), realEventMap.get(telescope.getId()));
+			totalScore -= telescopeScore;
+//			if (telescopeScore > 0) {
+//				System.out.println("NON ZERO TELESCOPE " + telescope.getId() + " " + telescopeScore);
+//			}
 		}
 
 		return totalScore; 
@@ -39,6 +43,9 @@ public class SolutionScoreCalculator {
 	
 	private double getTotalEventDuration(List<Event> events) {
 		double duration = 0;
+		if (events == null) {
+			return 0;
+		}
 		for (Event e : events) {
 			duration += (e.getEndTime() - e.getStartTime());
 		}
@@ -47,7 +54,7 @@ public class SolutionScoreCalculator {
 	
 	private double getTotalIntersectionDuration(List<Event> solutionEvents, List<Event> realEvents) {
 		double totalIntersection = 0;
-		if (solutionEvents.size() == 0 || realEvents.size() == 0)
+		if (realEvents == null || solutionEvents == null || solutionEvents.size() == 0 || realEvents.size() == 0)
 			return 0;
 		int solutionEventIndex = 0;
 		int realEventIndex = 0;
