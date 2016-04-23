@@ -1,0 +1,6 @@
+Ho to call generate_data.py
+Parameters:
+telescope grid width
+telescope grid height
+Telescope grid step x - widthwise
+Telescope grid step y - heightwise

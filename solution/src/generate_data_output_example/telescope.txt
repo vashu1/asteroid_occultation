@@ -1,0 +1,7 @@
+# asteroids info
+# number_of_telescope  x_coordinate y_coordinate
+1 10 10
+2 10 20
+3 20 10
+4 20 20
+# here we have 4 telescopes in corners of square with sides = 10
