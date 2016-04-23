@@ -2,6 +2,7 @@ package solution.model;
 
 public class Solution {
 	private double radius;
+	private double t0;
 	private double x0;
 	private double y0;
 	private double xv;
@@ -10,15 +11,17 @@ public class Solution {
 	
 	public Solution(Solution solution) {
 		this.radius = solution.radius;
+		this.t0 = solution.t0;
 		this.x0 = solution.x0;
 		this.y0 = solution.y0;
 		this.xv = solution.xv;
 		this.yv = solution.yv;
 	}
 	
-	public Solution(double radius, double x0, double y0, double xv, double yv) {
+	public Solution(double radius, double t0, double x0, double y0, double xv, double yv) {
 		super();
 		this.radius = radius;
+		this.t0 = t0;
 		this.x0 = x0;
 		this.y0 = y0;
 		this.xv = xv;
@@ -62,6 +65,20 @@ public class Solution {
 
 	public void setScore(double score) {
 		this.score = score;
+	}
+
+	public double getT0() {
+		return t0;
+	}
+
+	public void setT0(double t0) {
+		this.t0 = t0;
+	}
+
+	@Override
+	public String toString() {
+		return "Solution [radius=" + radius + ", t0=" + t0 + ", x0=" + x0 + ", y0=" + y0 + ", xv=" + xv + ", yv=" + yv
+				+ ", score=" + score + "]";
 	}
 	
 	

@@ -8,6 +8,8 @@ import solution.model.Event;
 import solution.model.TelescopeManager;
 import solution.model.EventManager;
 
+import solution.algorithm.AlgorithmRunner;
+
 public class Test {
 	public static void main(String[] args) throws Exception {
 		TelescopeManager tm = new TelescopeManager();
@@ -33,7 +35,8 @@ public class Test {
 		
 		System.out.println(events);
 		System.out.println(asteroids);
-
+		
+		new AlgorithmRunner(telescopes, events);
 	}
 	
 //	public static LoadEvents() {

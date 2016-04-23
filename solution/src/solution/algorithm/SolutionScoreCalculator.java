@@ -1,7 +1,6 @@
 package solution.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import solution.model.Event;
 import solution.model.Solution;
@@ -18,15 +17,80 @@ public class SolutionScoreCalculator {
 	public double getSolutionScore(Solution solution) {
 		List<Event> solutionEvents = calculateSolutionEvents(solution);
 		// add f(R) to score
-		return eventFit(solutionEvents, this.events);
+		return eventFit(solutionEvents, this.events, solution);
 	}
 	
-	private double eventFit(List<Event> solutionEvents, List<Event> realEvents) {
-		// sort by telescope
-		//for telescope
-		//false positive
-		//false negatives
-		return 0; // TODO
+	private double eventFit(List<Event> solutionEvents, List<Event> realEvents, Solution solution) {
+		Map<Integer, List<Event>> solutionEventMap = getEventMap(solutionEvents);
+		Map<Integer, List<Event>> realEventMap = getEventMap(realEvents);
+		double totalScore = solution.getRadius() / AlgorithmRunner.INITIAL_RADIUS;
+		for (Telescope telescope : this.telescopes) {
+			totalScore -= getTelescopeScore(solutionEventMap.get(telescope.getId()), realEventMap.get(telescope.getId()));
+		}
+
+		return totalScore; 
+	}
+	
+	private double getTelescopeScore(List<Event> solutionEvents, List<Event> realEvents) {
+		double totalSolutionEventDuration = getTotalEventDuration(solutionEvents);
+		double totalRealEventDuration = getTotalEventDuration(realEvents);
+		return totalSolutionEventDuration + totalRealEventDuration
+				- 2 * getTotalIntersectionDuration(solutionEvents, realEvents);
+	}
+	
+	private double getTotalEventDuration(List<Event> events) {
+		double duration = 0;
+		for (Event e : events) {
+			duration += (e.getEndTime() - e.getStartTime());
+		}
+		return duration;
+	}
+	
+	private double getTotalIntersectionDuration(List<Event> solutionEvents, List<Event> realEvents) {
+		double totalIntersection = 0;
+		if (solutionEvents.size() == 0 || realEvents.size() == 0)
+			return 0;
+		int solutionEventIndex = 0;
+		int realEventIndex = 0;
+		Event solutionEvent = getSafeEvent(solutionEvents, 0);
+		Event realEvent = getSafeEvent(realEvents, 0);
+		while (solutionEvent != null && realEvent != null) {
+			double intersectionDuration = Math.min(solutionEvent.getEndTime(), realEvent.getEndTime()) -
+					Math.max(solutionEvent.getStartTime(), realEvent.getStartTime());
+			if (intersectionDuration > 0) {
+				totalIntersection += intersectionDuration;
+				if (solutionEvent.getEndTime() < realEvent.getEndTime()) {
+					solutionEventIndex++;
+				} else {
+					realEventIndex++;
+				}
+			} else {
+				if (solutionEvent.getStartTime() < realEvent.getStartTime()) {
+					solutionEventIndex++;
+				} else {
+					realEventIndex++;
+				}
+			}	
+			solutionEvent = getSafeEvent(solutionEvents, solutionEventIndex);
+			realEvent = getSafeEvent(realEvents, realEventIndex);
+		}
+		return totalIntersection;
+	}
+	
+	private Event getSafeEvent(List<Event> list, int index) {
+		return (index >= list.size()) ? null : list.get(index);
+	}
+	
+	
+	private Map<Integer, List<Event>> getEventMap(List<Event> events) {
+		Map<Integer, List<Event>> solutionMap = new HashMap<Integer, List<Event>>();
+		for (Event e: events) {
+			if (solutionMap.get(e.getTelescope().getId()) == null) {
+				solutionMap.put(e.getTelescope().getId(), new ArrayList<Event>());
+			}
+			solutionMap.get(e.getTelescope().getId()).add(e);
+		}
+		return solutionMap;
 	}
 	
 	private List<Event> calculateSolutionEvents(Solution solution) {
@@ -41,8 +105,8 @@ public class SolutionScoreCalculator {
 	}
 	
 	private Event calculateTelescopeEvent(Telescope telescope, Solution solution) {
-		double xa = solution.getX0();
-		double ya = solution.getY0();
+		double xa = solution.getX0() - solution.getT0() * solution.getXv();
+		double ya = solution.getY0() - solution.getT0() * solution.getYv();
 		double vxa = solution.getXv();
 		double vya = solution.getYv();
 		double xt = telescope.getX();
@@ -60,8 +124,8 @@ public class SolutionScoreCalculator {
 		if (D <= 0)
 			return null;
 		
-		double t1 = (-b + Math.sqrt(D)) / (2 * a);
-		double t2 = (-b - Math.sqrt(D)) / (2 * a);
+		double t1 = (-b + Math.sqrt(D)) / (2 * a) * 1000;
+		double t2 = (-b - Math.sqrt(D)) / (2 * a) * 1000;
 		
 		return new Event(telescope, t2, t1);
 	}
