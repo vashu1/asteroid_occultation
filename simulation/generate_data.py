@@ -115,3 +115,5 @@ with open('telescope.txt','w') as f:
     for t_num in telescopes.keys():
         f.write(format(str(t_num) + ' ' + str(telescopes[t_num])))
     f.close()
+
+print "Data files simulated"

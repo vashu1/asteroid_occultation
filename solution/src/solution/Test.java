@@ -11,12 +11,17 @@ import solution.model.EventManager;
 import solution.algorithm.AlgorithmRunner;
 
 public class Test {
+//	private final static String INPUT_FOLDER = ".." + 
+//				java.io.File.separator + "simulation";
+	
+	private final static String INPUT_FOLDER = ".";
+
 	public static void main(String[] args) throws Exception {
-		TelescopeManager tm = new TelescopeManager();
+		TelescopeManager tm = new TelescopeManager(INPUT_FOLDER);
 		
 		tm.Load();
 		
-		AsteroidManager am = new AsteroidManager();
+		AsteroidManager am = new AsteroidManager(INPUT_FOLDER);
 		
 		am.Load();
 		
@@ -27,7 +32,7 @@ public class Test {
 		System.out.println(telescopes);
 		
 		
-		EventManager em = new EventManager();
+		EventManager em = new EventManager(INPUT_FOLDER);
 		
 		em.Load(tm);
 		

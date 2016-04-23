@@ -9,13 +9,18 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class EventManager {
-	private final static String INPUT_FOLDER = "src" + java.io.File.separator + "generate_data_output_example";
 	private final static String INPUT_FILE_EVENTS = "events.txt";
 
 	private List<Event> events = new ArrayList<Event>();
+	private String folder;
+	
+	public EventManager(String folder) {
+		this.folder = folder;
+	}
+	
 	
 	public void Load(TelescopeManager tm) throws IOException {
-		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + INPUT_FOLDER + java.io.File.separator + INPUT_FILE_EVENTS);
+		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + this.folder + java.io.File.separator + INPUT_FILE_EVENTS);
 		BufferedReader reader = Files.newBufferedReader(eventsFile, Charset.defaultCharset());
 		String line = null;
 		while ((line = reader.readLine()) != null) {

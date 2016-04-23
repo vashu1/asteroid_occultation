@@ -24,7 +24,7 @@ public class AlgorithmRunner {
 	}
 
 	public void run() {
-		Solution best = getInitialSolution(events.get(0), events.get(events.size() - 1));
+		Solution best = getInitialSolution();
 		
 		double e = STEP_X * 2;
 		while (e > 0.05) {
@@ -37,6 +37,20 @@ public class AlgorithmRunner {
 			e *= 0.9;
 		}
 		System.out.println("SOLUTION: " + best);
+	}
+	
+	public Solution getInitialSolution() {
+		Event e1 = events.get(0);
+		Event e2 = events.get(events.size() - 1);
+		double xv = (e2.getTelescope().getX() - e1.getTelescope().getX()) / (e2.getStartTime() - e1.getStartTime());
+		double yv = (e2.getTelescope().getY() - e1.getTelescope().getY()) / (e2.getStartTime() - e1.getStartTime());
+		double middle_t = (e2.getStartTime() - e1.getStartTime()) / 2;
+		double t0 = e1.getStartTime() + middle_t;
+		double x0 = e1.getTelescope().getX() + middle_t * xv;
+		double y0 = e1.getTelescope().getY() + middle_t * yv;
+		Solution result =  new Solution(INITIAL_RADIUS, t0, x0, y0, xv, yv);
+		result.setScore(this.scoreCalculator.getSolutionScore(result));
+		return result;
 	}
 	
 	private Solution getMaxScoreSolution(List<Solution> solutions) {
@@ -52,18 +66,6 @@ public class AlgorithmRunner {
 		return maxScore;
 	}
 	
-	public Solution getInitialSolution(Event e1, Event e2) {
-		double xv = (e2.getTelescope().getX() - e1.getTelescope().getX()) / (e2.getStartTime() - e1.getStartTime());
-		double yv = (e2.getTelescope().getY() - e1.getTelescope().getY()) / (e2.getStartTime() - e1.getStartTime());
-		double middle_t = (e2.getStartTime() - e1.getStartTime()) / 2;
-		double t0 = e1.getStartTime() + middle_t;
-		double x0 = e1.getTelescope().getX() + middle_t * xv;
-		double y0 = e1.getTelescope().getY() + middle_t * yv;
-		Solution result =  new Solution(INITIAL_RADIUS, t0, x0, y0, xv, yv);
-		result.setScore(this.scoreCalculator.getSolutionScore(result));
-		return result;
-	}
-
 	
 	/**
 	 * 
