@@ -1,9 +1,24 @@
 #!/bin/python
 
+# Asteroid's shadow is round and it's radius is always ASTEROID_R
+# Shadow's speed is between ASTEROID_MIN_SPEED and ASTEROID_MAX_SPEED
+# Vx is positive and Vy is smaller than Vx at least ASTEROID_VX_VY_RATIO times.
+# that is because asteroids move on orbit in same direction as Earth and mostly in same plane - so it's speed in some range. 
+# We cannot detect ones that are near 0, so we look for ones that are between nim and max, and later we can do -max, -min with same algorithm.
+#
+# We have a rectangle grid of telescope. Number of telescopes T_WIDTH * T_HEIGHT
+# The distance between them is T_STEP_X and T_STEP_Y
+#
+# NO NOISE
+
+
+import os
+import math
 from random import randint
 
 ASTEROID_R = 50
 ASTEROID_MAX_SPEED = 10 * 1000
+ASTEROID_MIN_SPEED = ASTEROID_MAX_SPEED / 10
 ASTEROID_VX_VY_RATIO = 3
 
 T_WIDTH  = 10
@@ -11,57 +26,91 @@ T_HEIGHT = 10
 T_STEP_X = ASTEROID_R
 T_STEP_Y = ASTEROID_R
 
+OCCULTATION_FLAG = 'occultation'
+NOISE_FLAG = 'noise'
+
 telescopes = {} # telescope_num: (x, y)
 asteroid = () # (x, y, vx, vy)
 
+
+def format(str):
+    return str.replace('(', '').replace(')', '').replace(',', '').replace('\'', '') + os.linesep
+
+def time_to_msec_str(time):
+    return "%.0f" % (time * 1000)
+
 def init_telescopes():
+    telescopes = {}
     for x in range(T_WIDTH):
         for y in range(T_HEIGHT):
-		    telescopes[y + x * T_HEIGHT] = (x * T_STEP_X, y * T_STEP_Y)
+            telescopes[y + x * T_HEIGHT] = (x * T_STEP_X, y * T_STEP_Y)
+    return telescopes
 
 def init_asteroid():
-    xt = randint(1, T_WIDTH  * T_STEP_X - 1)
-	yt = randint(1, T_HEIGHT * T_STEP_Y - 1)
-	vx = randint(1, ASTEROID_MAX_SPEED)
-	vy = randint(-vx / ASTEROID_VX_VY_RATIO, vx / ASTEROID_VX_VY_RATIO)
+    xt = T_WIDTH  * T_STEP_X / 2
+    yt = randint(0, T_HEIGHT * T_STEP_Y)
+    vx = randint(0, ASTEROID_MAX_SPEED - ASTEROID_MIN_SPEED) + ASTEROID_MIN_SPEED
+    vy = randint(-vx / ASTEROID_VX_VY_RATIO, vx / ASTEROID_VX_VY_RATIO)
  
-    t = randint(0,100)
-	x = xt - vx * t
-	y = yt - vy * t
-	
-	asteroid = (x, y, vx, vy)
+    t = randint(100, 200)
+    x = xt - vx * t
+    y = yt - vy * t
+
+    return (x, y, vx, vy)
 
 def calc_event(telescope_num):
     xa = asteroid[0]
-	ya = asteroid[1]
-	vxa = asteroid[2]
-	vya = asteroid[3]
+    ya = asteroid[1]
+    vxa = asteroid[2]
+    vya = asteroid[3]
     xt = telescopes[telescope_num][0]
-    xt = telescopes[telescope_num][1]
+    yt = telescopes[telescope_num][1]
 
-	xd = xa - xt
+    xd = xa - xt
     yd = ya - yt
 
-	a = vxa * vxa + vya * vya
-	b = 2 * (vx * xd + vy * yd)
-	c = dx * dx + dy * dy - ASTEROID_R * ASTEROID_R
+    a = vxa * vxa + vya * vya
+    b = 2 * (vxa * xd + vya * yd)
+    c = xd * xd + yd * yd - ASTEROID_R * ASTEROID_R
 
-	D = b * b - 4 * a * c
-	
-	if D > 0:
-	    t1 = (-b + sqrt(D)) / (2 * a)
-		t2 = (-b - sqrt(D)) / (2 * a)
-		print (telescope_num, t1, t2)
-		#event_begin = (xa + vxa * t1, ya + vya * t1)
-		#event_end = (xa + vxa * t2, ya + vya * t2)
-		
+    D = b * b - 4 * a * c
+
+    if D > 0:
+        t1 = (-b + math.sqrt(D)) / (2 * a)
+        t2 = (-b - math.sqrt(D)) / (2 * a)
+        return (telescope_num, time_to_msec_str(t2), time_to_msec_str(t1))
+        #event_begin_point = (xa + vxa * t1, ya + vya * t1)
+        #event_end_point = (xa + vxa * t2, ya + vya * t2)
+
 
 def calc_events():
+    events = []
     for k in telescopes.keys():
-	    calc_event(k)
+        event = calc_event(k)
+        if event:
+            events.append(event)
+    return events
 
-init_telescopes()
-print telescopes
+telescopes = init_telescopes()
+#print telescopes
 
-init_asteroid()
-print asteroid
+asteroid = init_asteroid()
+#asteroid = (0,0,1,1)
+#print asteroid
+
+events = calc_events()
+
+# output data
+with open('asteroid.txt','w') as f:
+    f.write(format(str(asteroid)))
+    f.close()
+
+with open('events.txt','w') as f:
+    for event in events:
+        f.write(format(str(event) + ' ' + OCCULTATION_FLAG))
+    f.close()
+
+with open('telescope.txt','w') as f:
+    for t_num in telescopes.keys():
+        f.write(format(str(t_num) + ' ' + str(telescopes[t_num])))
+    f.close()
