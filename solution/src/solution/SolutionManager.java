@@ -13,7 +13,7 @@ public class SolutionManager {
 	private final static String INPUT_FOLDER = ".";
 
 	public static void main(String[] args) throws Exception {
-		SimulationRunner.launchSimulation();
+		new SimulationRunner().launchSimulation();
 		runAlgorithm();
 	}
 	

@@ -14,7 +14,7 @@ public class SmartSolutionManager {
 	private final static String INPUT_FOLDER = ".";
 
 	public static void main(String[] args) throws Exception {
-		SimulationRunner.launchSimulation();
+		new SimulationRunner("generate_data_noise.py").launchSimulation();
 		runAlgorithm();
 	}
 	
