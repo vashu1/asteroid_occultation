@@ -29,7 +29,7 @@ public class SolutionAnalyser {
 	}
 	
 	public double analyze() {
-		System.out.println("ASTEROID " + realAsteroid);
+		System.out.println("REAL ASTEROID " + realAsteroid);
 		Asteroid found = new Asteroid(this.solutions.get(0));
 		System.out.println("BEST candidate " + found);
 		double error = getError(realAsteroid, found);
