@@ -1,6 +1,6 @@
 package solution.model;
 
-public class Solution {
+public class Solution implements Comparable {
 	private double radius;
 	private double t0;
 	private double x0;
@@ -89,6 +89,9 @@ public class Solution {
 		return "Solution [radius=" + radius + ", t0=" + t0 + ", x0=" + x0 + ", y0=" + y0 + ", xv=" + xv + ", yv=" + yv
 				+ ", score=" + score+ ", x00=" + (x0-t0*xv) + ", y00=" + (y0-t0*yv) + "]";
 	}
-	
+	@Override
+	public int compareTo(Object e2) {
+		return new Double(this.score).compareTo(((Solution)e2).getScore());
+	}
 	
 }

@@ -6,13 +6,16 @@ public class AlgorithmRunner {
 	public static double INITIAL_WIDTH = 1;
 	public static double INITIAL_RADIUS = 100;
 	private static double STEP_X = INITIAL_RADIUS;
+	private static int BEST_CANDIDATES_COUNT = 10;
 	private SolutionScoreCalculator scoreCalculator;
+	private TreeMap<Double, List<Event>> timeBuckets;
 	private Asteroid asteroid;
 	
 	private List<Event> events;
 	
 	public AlgorithmRunner(List<Telescope> telescopes, EventManager eventManager, List<Asteroid> asteroids) {
 		this.events = eventManager.getEvents();
+		this.timeBuckets = eventManager.getTimeBuckets();
 		this.scoreCalculator = new SolutionScoreCalculator(events, telescopes);
 		
 //		this.asteroid = asteroids.get(0);
@@ -22,10 +25,29 @@ public class AlgorithmRunner {
 //			solutions.add(getChangedSolution(sol, 10, param));
 //		}
 	}
-
+	
+	public List<Solution> smartRun() {
+		List<Solution> solutions = new ArrayList<>();
+		for (Event firstEvent: this.timeBuckets.get(this.timeBuckets.firstKey())) {
+			for (Event secondEvent: this.timeBuckets.get(this.timeBuckets.lastKey())) {
+				solutions.add(getInitialSolution(firstEvent, secondEvent));
+			}
+		}
+		Collections.sort(solutions);
+		List<Solution> bestInitialSolutions = solutions.subList(0, BEST_CANDIDATES_COUNT);
+		List<Solution> bestSolutions = new ArrayList<>();
+		for (Solution bestInitial : bestInitialSolutions) {
+			bestSolutions.add(runAlgorithm(bestInitial));
+		}
+		return bestSolutions;
+	}
+	
 	public void run() {
-		Solution best = getInitialSolution();
-		
+		Solution first = getInitialSolution();
+		runAlgorithm(first);
+	}
+	
+	private Solution runAlgorithm(Solution best) {
 		double e = STEP_X;
 		while (e > 0.05) {
 			List<Solution> solutions = new ArrayList<Solution>();
@@ -36,12 +58,17 @@ public class AlgorithmRunner {
 					
 			e *= 0.99;
 		}
+		return best;
 //		System.out.println("SOLUTION: " + best);
 	}
 	
 	public Solution getInitialSolution() {
 		Event e1 = events.get(0);
 		Event e2 = events.get(events.size() - 1);
+		return getInitialSolution(e1, e2);
+	}
+	
+	private Solution getInitialSolution(Event e1, Event e2) {
 		double xv = (e2.getTelescope().getX() - e1.getTelescope().getX()) / (e2.getStartTime() - e1.getStartTime());
 		double yv = (e2.getTelescope().getY() - e1.getTelescope().getY()) / (e2.getStartTime() - e1.getStartTime());
 		double middle_t = (e2.getStartTime() - e1.getStartTime()) / 2;

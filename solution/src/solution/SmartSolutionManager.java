@@ -1,15 +1,16 @@
 package solution;
+
 import java.util.List;
 
+import solution.algorithm.AlgorithmRunner;
 import solution.model.Asteroid;
 import solution.model.AsteroidManager;
+import solution.model.EventManager;
 import solution.model.Telescope;
 import solution.model.TelescopeManager;
-import solution.model.EventManager;
 
-import solution.algorithm.AlgorithmRunner;
+public class SmartSolutionManager {
 
-public class SolutionManager {
 	private final static String INPUT_FOLDER = ".";
 
 	public static void main(String[] args) throws Exception {
@@ -35,7 +36,8 @@ public class SolutionManager {
 //		System.out.println(events);
 //		System.out.println(asteroids);
 //		
-		new AlgorithmRunner(telescopes, em, asteroids).run();
+		SolutionAnalyser analyzer = new SolutionAnalyser(asteroids.get(0), new AlgorithmRunner(telescopes, em, asteroids).smartRun());
+		analyzer.analyze();
 	}
 
 }

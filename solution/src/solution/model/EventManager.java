@@ -34,15 +34,15 @@ public class EventManager {
 		    Collections.sort(this.events);
 		}
 		this.calculateTimeBuckets();
-		showBuckets();
-		System.out.println("Buckets" + buckets);
+//		showBuckets();
+//		System.out.println("Buckets" + buckets);
 	}
-	
-	private void showBuckets() {
-		for(List<Event> events: buckets.values()) {
-			System.out.println("Bucket Size" + events.size());
-		}
-	}
+//	
+//	private void showBuckets() {
+//		for(List<Event> events: buckets.values()) {
+//			System.out.println("Bucket Size" + events.size());
+//		}
+//	}
 	
 	private void calculateTimeBuckets() {
 		double currentKey = 0; 
@@ -65,8 +65,8 @@ public class EventManager {
 		this.events = events;
 	}
 	
-	public Map<Double, List<Event>> getTimeBuckets() {
-		return null;
+	public TreeMap<Double, List<Event>> getTimeBuckets() {
+		return this.buckets;
 	}
 	
 }
