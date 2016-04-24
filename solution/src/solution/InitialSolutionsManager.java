@@ -21,7 +21,7 @@ public class InitialSolutionsManager {
 
 		StringBuilder results = new StringBuilder();
 		for (int i=0; i<ITERATION_COUNT; i++) {
-			SimulationRunner.launchSimulation();
+			new SimulationRunner().launchSimulation();
 			String result = launchSolution();
 			results.append(result).append("\n");
 		}

@@ -26,18 +26,30 @@ public class AlgorithmRunner {
 //		}
 	}
 	
-	public List<Solution> smartRun() {
+	public List<Solution> smartRun() throws NoGoodPairException {
 		List<Solution> solutions = new ArrayList<>();
+		List<Solution> bestSolutions = new ArrayList<>();
+
+//		System.out.println("FIRST BUCKET " + this.timeBuckets.get(this.timeBuckets.firstKey()).size());
+//		System.out.println("LAST BUCKET " + this.timeBuckets.get(this.timeBuckets.lastKey()).size());
+
 		for (Event firstEvent: this.timeBuckets.get(this.timeBuckets.firstKey())) {
 			for (Event secondEvent: this.timeBuckets.get(this.timeBuckets.lastKey())) {
-				solutions.add(getInitialSolution(firstEvent, secondEvent));
+				if (!firstEvent.isNoise() && !secondEvent.isNoise()) {
+//					System.out.println("PAIR GOOD" + firstEvent + " ---- " + secondEvent);
+					solutions.add(getInitialSolution(firstEvent, secondEvent));
+				}
 			}
 		}
+		if (solutions.size() == 0)
+			throw new NoGoodPairException();
 		Collections.sort(solutions);
-		List<Solution> bestInitialSolutions = solutions.subList(0, BEST_CANDIDATES_COUNT);
-		List<Solution> bestSolutions = new ArrayList<>();
+//		System.out.println("INITIAL " + solutions);
+		List<Solution> bestInitialSolutions = solutions.subList(0, Math.min(BEST_CANDIDATES_COUNT, solutions.size()));
 		for (Solution bestInitial : bestInitialSolutions) {
-			bestSolutions.add(runAlgorithm(bestInitial));
+			Solution sol = runAlgorithm(bestInitial);
+			bestSolutions.add(sol);
+//			System.out.println("CANDIDATE " + sol);
 		}
 		return bestSolutions;
 	}

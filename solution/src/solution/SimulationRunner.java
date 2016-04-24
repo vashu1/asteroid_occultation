@@ -5,9 +5,20 @@ package solution;
 import java.nio.file.Paths;
 
 public class SimulationRunner {
-	public static void launchSimulation() throws Exception {
+	private static final String GENERATOR_FILE = "generate_data.py";
+	private String generatorFile;
+	
+	public SimulationRunner() {
+		this.generatorFile = GENERATOR_FILE;
+	}
+	
+	public SimulationRunner(String generatorFile) {
+		this.generatorFile = generatorFile;
+	}
+
+	public void launchSimulation() throws Exception {
 		String absPath = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + ".." + 
-				java.io.File.separator + "simulation" + java.io.File.separator + "generate_data.py" ).toString();
+				java.io.File.separator + "simulation" + java.io.File.separator + this.generatorFile).toString();
 		String command = "python " + absPath;
 //		String line;
 	    Process child = Runtime.getRuntime().exec(command);

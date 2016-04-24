@@ -29,11 +29,15 @@ public class EventManager {
 		    if (parts[0].equals("#")) { 
 		    	continue;
 		    }
-		    Event e = new Event(tm.getTelescopeById(Integer.parseInt(parts[0])), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+		    Event e = new Event(tm.getTelescopeById(Integer.parseInt(parts[0])), 
+		    		Double.parseDouble(parts[1]), 
+		    		Double.parseDouble(parts[2]),
+		    		"noise".equals(parts[3]));
 		    events.add(e);
-		    Collections.sort(this.events);
 		}
+	    Collections.sort(this.events);
 		this.calculateTimeBuckets();
+//		System.out.println("EVENTS DETECTED: " + this.events.size());
 //		showBuckets();
 //		System.out.println("Buckets" + buckets);
 	}
@@ -45,16 +49,43 @@ public class EventManager {
 //	}
 	
 	private void calculateTimeBuckets() {
-		double currentKey = 0; 
-		double currentBucketTimeLimit = events.get(0).getStartTime() + step;
-		buckets.put(currentKey, new ArrayList<Event> ());
+//		double currentKey = 0; 
+//		double currentBucketTimeLimit = events.get(0).getStartTime() + step;
+//		buckets.put(currentKey, new ArrayList<Event> ());
+//		for (Event e: this.events) {
+//			if (e.getStartTime() > currentBucketTimeLimit){
+//				buckets.put(++currentKey, new ArrayList<Event> ());	
+//				currentBucketTimeLimit = currentBucketTimeLimit + step;	
+//			}
+//			buckets.get(currentKey).add(e);
+//		}
+		double maxX = getMaxX();
+		Double first = new Double(0);
+		Double main = new Double(1);
+		Double last = new Double(2);
+		buckets.put(first, new ArrayList<Event>());
+		buckets.put(main, new ArrayList<Event>());
+		buckets.put(last, new ArrayList<Event>());
+//		System.out.println("MAX X: "+ maxX);
 		for (Event e: this.events) {
-			if (e.getStartTime() > currentBucketTimeLimit){
-				buckets.put(++currentKey, new ArrayList<Event> ());	
-				currentBucketTimeLimit = currentBucketTimeLimit + step;	
+			if (e.getTelescope().getX() == 0) {
+				buckets.get(first).add(e);
+			} else if (e.getTelescope().getX() == maxX) {
+				buckets.get(last).add(e);
+			} else {
+				buckets.get(main).add(e);
 			}
-			buckets.get(currentKey).add(e);
 		}
+	}
+	
+	private double getMaxX() {
+		double max = 0;
+		for (Event e: this.events) {
+			if (e.getTelescope().getX() > max) {
+				max = e.getTelescope().getX();
+			}
+		}
+		return max;
 	}
 
 	public List<Event> getEvents() {

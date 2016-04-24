@@ -91,7 +91,7 @@ public class Solution implements Comparable {
 	}
 	@Override
 	public int compareTo(Object e2) {
-		return new Double(this.score).compareTo(((Solution)e2).getScore());
+		return new Double(((Solution)e2).getScore()).compareTo(new Double(this.score));
 	}
 	
 }
