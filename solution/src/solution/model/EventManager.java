@@ -62,6 +62,7 @@ public class EventManager {
 		buckets.put(first, new ArrayList<Event>());
 		buckets.put(main, new ArrayList<Event>());
 		buckets.put(last, new ArrayList<Event>());
+		System.out.println("MAX X: "+ maxX);
 		for (Event e: this.events) {
 			if (e.getTelescope().getX() == 0) {
 				buckets.get(first).add(e);
