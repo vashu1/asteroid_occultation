@@ -65,38 +65,36 @@ def init_asteroid():
 
     return (x, y, vx, vy)
 
-def list_of_noise(start, duration, actual_event, scope_num):
+def list_with_noise(start, duration, actual_event, scope_num):
     duration_frames = duration / FRAME_DURATION_SEC
     noise_ratio = 1 / NOISE_EVENTS_PER_SCOPE_SECOND / FRAME_DURATION_SEC
     res = []
     for i in range(int(duration_frames)):
         if randint(0, noise_ratio) == 0:
             if not actual_event:
-                res.append((scope_num, i * FRAME_DURATION_SEC, (i + 1) * FRAME_DURATION_SEC))
+                res.append((scope_num, start + i * FRAME_DURATION_SEC, start + (i + 1) * FRAME_DURATION_SEC, NOISE_FLAG))
             else:
                 if actual_event[2] <= i * FRAME_DURATION_SEC and actual_event[1] >= (i + 1) * FRAME_DURATION_SEC:
-                    res.append((scope_num, i * FRAME_DURATION_SEC, (i + 1) * FRAME_DURATION_SEC))
-                if actual_event[1] == i * FRAME_DURATION_SEC:
+                    res.append((scope_num, start + i * FRAME_DURATION_SEC, start + (i + 1) * FRAME_DURATION_SEC, NOISE_FLAG))
+                if abs(actual_event[1] - start - i * FRAME_DURATION_SEC) < 0.000001:
                     res.append(actual_event)
     return res
 
 def add_noise(events):
     max_event = max(events, key=lambda x: x[2]) # 2 is end time
     min_event = min(events, key=lambda x: x[1]) # 1 is start time
-    print max_event
-    print min_event
     event_to_scope = {}
     for event in events:
         # key is scope number
         event_to_scope[event[0]] = event
-    pass_duration = max_event[2] - min_event[1]
-    pass_center = min_event[1] + pass_duration / 2
+    pass_duration = round_time_to_frame(max_event[2] - min_event[1])
+    pass_center = round_time_to_frame(min_event[1] + pass_duration / 2)
     res = []
     for scope_num in range(T_WIDTH * T_HEIGHT):
         actual_event = None
         if event_to_scope.has_key(scope_num):
             actual_event = event_to_scope[scope_num]
-        res.extend(list_of_noise(pass_center - pass_duration, 2 * pass_duration, actual_event, scope_num))
+        res.extend(list_with_noise(pass_center - pass_duration, 2 * pass_duration, actual_event, scope_num))
     return res
 
 def calc_event(telescope_num):
@@ -123,7 +121,7 @@ def calc_event(telescope_num):
         t2  = round_time_to_frame(t2)
         if t1 == t2:
             t1 = t2 + FRAME_DURATION_SEC
-        return (telescope_num, t2, t1)
+        return (telescope_num, t2, t1, OCCULTATION_FLAG)
         #event_begin_point = (xa + vxa * t1, ya + vya * t1)
         #event_end_point = (xa + vxa * t2, ya + vya * t2)
 
@@ -154,7 +152,7 @@ with open('asteroid.txt','w') as f:
 
 with open('events.txt','w') as f:
     for event in events:
-        f.write(format(str(event) + ' ' + OCCULTATION_FLAG))
+        f.write(format(str(event)))
     f.close()
 
 with open('telescope.txt','w') as f:
