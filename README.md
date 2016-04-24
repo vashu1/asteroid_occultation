@@ -32,7 +32,7 @@ That will run simulation and solution. A new set of data input files is generate
 
 The output of the program is result.txt file containing the list of errors for each iteration and also the number of iterations with no solutions.
 
-As input we have some 10 000 detected events(ooccultations) per second. Almost all of them are noise.
+As input we have some 10 000 detected events(ooccultations) per second. Almost all of them are noise. We simulate passing of asteroid with our software and put generated events on our processing algorithm. Then we calculate error by comparing simulated asteroid and extracted asteroid data. As test runs show, 50% of time we recover almost perfect data, and 40% of time error is below 10% - which proves that solution is acceptable.
 
 We go through all pairs of events detected on edge on array. Taking only events on edge and filtering by time reduces search space to some thousands of possible pairs.
 
