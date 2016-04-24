@@ -25,6 +25,7 @@ public class SolutionAnalyser {
 	}
 	
 	public void analyze() {
+		System.out.println("ASTEROID " + realAsteroid);
 		System.out.println("IVAN, analyze the result please " + this.bestCandidates);
 		// TODO: IVAN
 	}
