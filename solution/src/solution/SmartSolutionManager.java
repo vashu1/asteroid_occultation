@@ -17,7 +17,7 @@ import solution.model.TelescopeManager;
 public class SmartSolutionManager {
 
 	private final static String INPUT_FOLDER = ".";
-	private final static int ITERATION_COUNT = 10;
+	private final static int ITERATION_COUNT = 100;
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("STARTED " + System.currentTimeMillis());
