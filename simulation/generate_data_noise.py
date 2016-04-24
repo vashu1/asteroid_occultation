@@ -16,7 +16,7 @@ import os
 import math
 from random import randint
 
-NOISE_EVENTS_PER_SCOPE_SECOND = 1
+NOISE_EVENTS_PER_SCOPE_SECOND = 10.0
 FRAME_DURATION_SEC = 1 / 100.0
 
 ASTEROID_R = 100
