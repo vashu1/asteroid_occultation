@@ -76,8 +76,9 @@ def list_with_noise(start, duration, actual_event, scope_num):
             else:
                 if actual_event[2] <= i * FRAME_DURATION_SEC and actual_event[1] >= (i + 1) * FRAME_DURATION_SEC:
                     res.append((scope_num, start + i * FRAME_DURATION_SEC, start + (i + 1) * FRAME_DURATION_SEC, NOISE_FLAG))
-                if abs(actual_event[1] - start - i * FRAME_DURATION_SEC) < 0.000001:
-                    res.append(actual_event)
+        if actual_event:
+            if abs(actual_event[1] - start - i * FRAME_DURATION_SEC) < 0.000001:
+                res.append(actual_event)
     return res
 
 def add_noise(events):
@@ -90,6 +91,7 @@ def add_noise(events):
     pass_duration = round_time_to_frame(max_event[2] - min_event[1])
     pass_center = round_time_to_frame(min_event[1] + pass_duration / 2)
     res = []
+    print len(events)
     for scope_num in range(T_WIDTH * T_HEIGHT):
         actual_event = None
         if event_to_scope.has_key(scope_num):
