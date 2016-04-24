@@ -11,17 +11,22 @@ import java.util.List;
 
 public class AsteroidManager {
 	
-	private final static String INPUT_FOLDER = "src" + java.io.File.separator + "generate_data_output_example";
 	private final static String INPUT_FILE_ASTEROIDS = "asteroid.txt";
 
 	private List<Asteroid> asteroids = new ArrayList<Asteroid>();
+	
+    private String folder;
+	
+	public AsteroidManager(String folder) {
+		this.folder = folder;
+	}
 	
 	public List<Asteroid> getAsteroids() {
 		return asteroids;
 	}
 	
 	public void Load() throws IOException {
-		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + INPUT_FOLDER + java.io.File.separator + INPUT_FILE_ASTEROIDS);
+		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + this.folder + java.io.File.separator + INPUT_FILE_ASTEROIDS);
 		BufferedReader reader = Files.newBufferedReader(eventsFile, Charset.defaultCharset());
 		StringBuilder content = new StringBuilder();
 		String line = null;
@@ -32,7 +37,6 @@ public class AsteroidManager {
 		    if (parts[0].equals("#")) { 
 		    	continue;
 		    }
-		    System.out.println(parts[0]);
 		    Asteroid t = new Asteroid();
 		    t.setX0(Integer.parseInt(parts[0]));
 		    t.setY0(Integer.parseInt(parts[1]));
@@ -40,7 +44,6 @@ public class AsteroidManager {
 		    t.setYv(Integer.parseInt(parts[3]));
 		    t.setR(Double.parseDouble(parts[4]));
 		    asteroids.add(t);
-		    System.out.println(t);
 		}
 	}
 }

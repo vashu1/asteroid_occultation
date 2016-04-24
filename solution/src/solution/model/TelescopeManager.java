@@ -11,13 +11,17 @@ import java.util.*;
 
 public class TelescopeManager {
 
-	private final static String INPUT_FOLDER = "src" + java.io.File.separator + "generate_data_output_example";
 	private final static String INPUT_FILE_TELESCOPES = "telescope.txt";
 
 	private List<Telescope> telescopes = new ArrayList<Telescope>();
+	private String folder;
+	
+	public TelescopeManager(String folder) {
+		this.folder = folder;
+	}
 	
 	public void Load() throws IOException {
-		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + INPUT_FOLDER + java.io.File.separator + INPUT_FILE_TELESCOPES);
+		Path eventsFile = Paths.get(Paths.get("").toAbsolutePath() + java.io.File.separator + this.folder + java.io.File.separator + INPUT_FILE_TELESCOPES);
 		BufferedReader reader = Files.newBufferedReader(eventsFile, Charset.defaultCharset());
 		StringBuilder content = new StringBuilder();
 		String line = null;

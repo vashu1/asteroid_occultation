@@ -4,3 +4,7 @@ bin/**
 .classpath
 .settings/
 .loadpath
+.metadata/
+.recommenders/
+RemoteSystemsTempFiles/
+*.txt

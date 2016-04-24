@@ -7,6 +7,12 @@ public class Asteroid {
 	int xv;
 	int yv;
 	double r;
+	
+	public Asteroid() {
+	}
+	public Asteroid(Solution solution) {
+		// TODO: IVAN
+	}
 	public int getX0() {
 		return x0;
 	}
