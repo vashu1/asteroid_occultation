@@ -24,6 +24,7 @@ public class SmartSolutionManager {
 		
 		AsteroidManager am = new AsteroidManager(INPUT_FOLDER);
 		am.Load();
+		System.out.println("BEFORE EVENTS");
 		
 		EventManager em = new EventManager(INPUT_FOLDER);
 		em.Load(tm);
@@ -36,6 +37,7 @@ public class SmartSolutionManager {
 //		System.out.println(events);
 //		System.out.println(asteroids);
 //		
+		System.out.println("DATA READ");
 		SolutionAnalyser analyzer = new SolutionAnalyser(asteroids.get(0), new AlgorithmRunner(telescopes, em, asteroids).smartRun());
 		analyzer.analyze();
 	}

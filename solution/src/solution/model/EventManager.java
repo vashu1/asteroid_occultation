@@ -31,8 +31,8 @@ public class EventManager {
 		    }
 		    Event e = new Event(tm.getTelescopeById(Integer.parseInt(parts[0])), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
 		    events.add(e);
-		    Collections.sort(this.events);
 		}
+	    Collections.sort(this.events);
 		this.calculateTimeBuckets();
 //		showBuckets();
 //		System.out.println("Buckets" + buckets);
