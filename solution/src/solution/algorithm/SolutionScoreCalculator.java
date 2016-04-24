@@ -124,6 +124,6 @@ public class SolutionScoreCalculator {
 		double t1 = (-b + Math.sqrt(D)) / (2 * a);
 		double t2 = (-b - Math.sqrt(D)) / (2 * a);
 		
-		return new Event(telescope, t2, t1);
+		return new Event(telescope, t2, t1, false);
 	}
 }

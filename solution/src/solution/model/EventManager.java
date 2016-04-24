@@ -29,11 +29,15 @@ public class EventManager {
 		    if (parts[0].equals("#")) { 
 		    	continue;
 		    }
-		    Event e = new Event(tm.getTelescopeById(Integer.parseInt(parts[0])), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+		    Event e = new Event(tm.getTelescopeById(Integer.parseInt(parts[0])), 
+		    		Double.parseDouble(parts[1]), 
+		    		Double.parseDouble(parts[2]),
+		    		"noise".equals(parts[3]));
 		    events.add(e);
 		}
 	    Collections.sort(this.events);
 		this.calculateTimeBuckets();
+//		System.out.println("EVENTS DETECTED: " + this.events.size());
 //		showBuckets();
 //		System.out.println("Buckets" + buckets);
 	}
@@ -62,7 +66,7 @@ public class EventManager {
 		buckets.put(first, new ArrayList<Event>());
 		buckets.put(main, new ArrayList<Event>());
 		buckets.put(last, new ArrayList<Event>());
-		System.out.println("MAX X: "+ maxX);
+//		System.out.println("MAX X: "+ maxX);
 		for (Event e: this.events) {
 			if (e.getTelescope().getX() == 0) {
 				buckets.get(first).add(e);
