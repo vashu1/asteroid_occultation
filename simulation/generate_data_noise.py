@@ -26,8 +26,8 @@ ASTEROID_MIN_SPEED = ASTEROID_MAX_SPEED / 10
 ASTEROID_VX_VY_RATIO = 3
 
 T_WIDTH  = 10
-T_HEIGHT = 10
-T_STEP_X = ASTEROID_R / 2
+T_HEIGHT = 100
+T_STEP_X = ASTEROID_R * 5
 T_STEP_Y = ASTEROID_R / 2
 
 OCCULTATION_FLAG = 'occultation'
@@ -94,7 +94,7 @@ def add_noise(events):
         actual_event = None
         if event_to_scope.has_key(scope_num):
             actual_event = event_to_scope[scope_num]
-        res.extend(list_with_noise(pass_center - pass_duration, 2 * pass_duration, actual_event, scope_num))
+        res.extend(list_with_noise(pass_center - 2 * pass_duration, 4 * pass_duration, actual_event, scope_num))
     return res
 
 def calc_event(telescope_num):
