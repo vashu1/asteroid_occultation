@@ -1,5 +1,30 @@
 #!/bin/python
 
+#
+#    Copyright (c) 2016 _andrewm_ at gmail.com, _elena.perchenko_ at gmail.com,
+#    _ivan.e.bondar_ at gmail.com, _katia.a.bondar_ at gmail.com,
+#    _mark.cepak_ at exemail.com.au, _wagner.esteban_ at gmail.com
+#    (remove underscores from mail)
+#
+#    Permission is hereby granted, free of charge, to any person obtaining a copy
+#    of this software and associated documentation files (the "Software"), to
+#    deal in the Software without restriction, including without limitation the
+#    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+#    sell copies of the Software, and to permit persons to whom the Software is
+#    furnished to do so, subject to the following conditions:
+#
+#    The above copyright notice and this permission notice shall be included in
+#    all copies or substantial portions of the Software.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+#    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+#    DEALINGS IN THE SOFTWARE.
+#
+
 # Asteroid's shadow is round and it's radius is always ASTEROID_R
 # Shadow's speed is between ASTEROID_MIN_SPEED and ASTEROID_MAX_SPEED
 # Vx is positive and Vy is smaller than Vx at least ASTEROID_VX_VY_RATIO times.
@@ -24,7 +49,7 @@ ASTEROID_VX_VY_RATIO = 3
 
 T_WIDTH  = 10
 T_HEIGHT = 10
-T_STEP_X = ASTEROID_R * 10
+T_STEP_X = ASTEROID_R / 2
 T_STEP_Y = ASTEROID_R / 2
 
 OCCULTATION_FLAG = 'occultation'
@@ -115,5 +140,3 @@ with open('telescope.txt','w') as f:
     for t_num in telescopes.keys():
         f.write(format(str(t_num) + ' ' + str(telescopes[t_num])))
     f.close()
-
-print "Data files simulated"
