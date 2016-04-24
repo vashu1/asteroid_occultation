@@ -11,9 +11,9 @@ public class AlgorithmRunner {
 	
 	private List<Event> events;
 	
-	public AlgorithmRunner(List<Telescope> telescopes, List<Event> events, List<Asteroid> asteroids) {
+	public AlgorithmRunner(List<Telescope> telescopes, EventManager eventManager, List<Asteroid> asteroids) {
+		this.events = eventManager.getEvents();
 		this.scoreCalculator = new SolutionScoreCalculator(events, telescopes);
-		this.events = events;
 		
 //		this.asteroid = asteroids.get(0);
 //		Solution sol = new Solution(this.asteroid);

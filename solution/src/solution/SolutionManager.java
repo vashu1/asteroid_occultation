@@ -4,7 +4,6 @@ import java.util.List;
 import solution.model.Asteroid;
 import solution.model.AsteroidManager;
 import solution.model.Telescope;
-import solution.model.Event;
 import solution.model.TelescopeManager;
 import solution.model.EventManager;
 
@@ -36,14 +35,12 @@ public class SolutionManager {
 		List<Telescope> telescopes = tm.getTelescopes();
 		
 		List<Asteroid> asteroids = am.getAsteroids();
-		
-		List<Event> events = em.getEvents();
-		
+				
 //		System.out.println(telescopes);
 //		System.out.println(events);
 //		System.out.println(asteroids);
 //		
-		new AlgorithmRunner(telescopes, events, asteroids).run();
+		new AlgorithmRunner(telescopes, em, asteroids).run();
 	}
 
 }

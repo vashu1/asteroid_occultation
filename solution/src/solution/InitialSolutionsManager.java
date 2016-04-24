@@ -14,12 +14,13 @@ import solution.model.TelescopeManager;
 
 public class InitialSolutionsManager {
 	private final static String INPUT_FOLDER = ".";
+	private final static int ITERATION_COUNT = 1;
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("STARTED " + System.currentTimeMillis());
 
 		StringBuilder results = new StringBuilder();
-		for (int i=0; i<1000; i++) {
+		for (int i=0; i<ITERATION_COUNT; i++) {
 			SimulationRunner.launchSimulation();
 			String result = launchSolution();
 			results.append(result).append("\n");
@@ -40,9 +41,8 @@ public class InitialSolutionsManager {
 		
 		List<Telescope> telescopes = tm.getTelescopes();
 		List<Asteroid> asteroids = am.getAsteroids();
-		List<Event> events = em.getEvents();
 		
-		String solution = new AlgorithmRunner(telescopes, events, asteroids).getInitialSolution().getScore() + "";
+		String solution = new AlgorithmRunner(telescopes, em, asteroids).getInitialSolution().getScore() + "";
 //		System.out.println(solution);
 		return solution;
 	}
